@@ -11,7 +11,7 @@ public class UsersController : Controller
     public UsersController(IUserService userService) => _userService = userService;
 
     [HttpGet]
-    public ViewResult List()
+    public ViewResult List(string filter)
     {
         var items = _userService.GetAll().Select(p => new UserListItemViewModel
         {
@@ -21,6 +21,18 @@ public class UsersController : Controller
             Email = p.Email,
             IsActive = p.IsActive
         });
+
+        switch(filter){
+            case "active":
+            items = items.Where(u => u.IsActive);
+            break;
+
+            case "inactive":
+            items = items.Where(u => !u.IsActive);
+            break; 
+
+            // default: select all users
+        } 
 
         var model = new UserListViewModel
         {
