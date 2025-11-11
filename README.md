@@ -12,13 +12,13 @@ Complete as many of the tasks below as you feel comfortable with. These are spli
 * **Expert** - Tasks with a higher level of problem solving and architecture needed
 * **Platform** - Tasks with a focus on infrastructure and scaleability, rather than application development.
 
-### 1. Filters Section (Standard)
+### 1. Filters Section (Standard) - Complete 
 
 The users page contains 3 buttons below the user listing - **Show All**, **Active Only** and **Non Active**. Show All has already been implemented. Implement the remaining buttons using the following logic:
 * Active Only – This should show only users where their `IsActive` property is set to `true`
 * Non Active – This should show only users where their `IsActive` property is set to `false`
 
-### 2. User Model Properties (Standard)
+### 2. User Model Properties (Standard) Doing Now.
 
 Add a new property to the `User` class in the system called `DateOfBirth` which is to be used and displayed in relevant sections of the app.
 

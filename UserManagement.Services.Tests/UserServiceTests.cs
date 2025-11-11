@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UserManagement.Models;
 using UserManagement.Services.Domain.Implementations;
@@ -20,14 +21,20 @@ public class UserServiceTests
         result.Should().BeSameAs(users);
     }
 
-    private IQueryable<User> SetupUsers(string forename = "Johnny", string surname = "User", string email = "juser@example.com", bool isActive = true)
+    private IQueryable<User> SetupUsers(string forename = "Johnny", string surname = "User", DateOnly dateOfBirth = default, string email = "juser@example.com", bool isActive = true)
     {
+
+        if(dateOfBirth == default) {
+            dateOfBirth = new DateOnly(2000, 1, 1);
+        } 
+
         var users = new[]
         {
             new User
             {
                 Forename = forename,
                 Surname = surname,
+                DateOfBirth = dateOfBirth,
                 Email = email,
                 IsActive = isActive
             }
