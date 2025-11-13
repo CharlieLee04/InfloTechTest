@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace UserManagement.Data;
 
@@ -29,4 +31,14 @@ public interface IDataContext
     void Update<TEntity>(TEntity entity) where TEntity : class;
 
     void Delete<TEntity>(TEntity entity) where TEntity : class;
+
+    /// <summary>
+    /// Get an entity by ID
+    /// </summary>
+    Task<TEntity?> GetByIdAsync<TEntity>(long id) where TEntity : class;
+
+    /// <summary>
+    /// Save all changes to database 
+    /// </summary>
+    //Task SaveChangesAsync();
 }

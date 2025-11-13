@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UserManagement.Data;
 using UserManagement.Models;
 using UserManagement.Services.Domain.Interfaces;
@@ -22,4 +23,14 @@ public class UserService : IUserService
     }
 
     public IEnumerable<User> GetAll() => _dataAccess.GetAll<User>();
+
+    public async Task<bool> Delete(long id)
+    {
+        var user = await _dataAccess.GetByIdAsync<User>(id);
+        if(user == null) return false;
+        
+        _dataAccess.Delete(user);
+        return true;
+
+    }
 }

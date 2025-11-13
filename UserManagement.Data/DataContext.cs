@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using UserManagement.Models;
 
@@ -49,4 +51,12 @@ public class DataContext : DbContext, IDataContext
         base.Remove(entity);
         SaveChanges();
     }
+
+    public async Task<TEntity?> GetByIdAsync<TEntity>(long id) where TEntity : class
+    {
+        return await base.Set<TEntity>().FindAsync(id);
+    }
+
+    //public async Task SaveChangesAsync() =>
+       //await base.SaveChangesAsync();
 }

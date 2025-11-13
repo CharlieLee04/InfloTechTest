@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using UserManagement.Services.Domain.Implementations;
 using UserManagement.Services.Domain.Interfaces;
 using UserManagement.Web.Models.Users;
 
@@ -42,4 +45,13 @@ public class UsersController : Controller
 
         return View(model);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteUser(long id)
+    {
+        var result = await _userService.Delete(id);
+        if(!result) return NotFound();
+        return RedirectToAction("List");
+    }
+
 }
