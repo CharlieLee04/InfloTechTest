@@ -12,17 +12,17 @@ Complete as many of the tasks below as you feel comfortable with. These are spli
 * **Expert** - Tasks with a higher level of problem solving and architecture needed
 * **Platform** - Tasks with a focus on infrastructure and scaleability, rather than application development.
 
-### 1. Filters Section (Standard) - Complete 
+### 1. Filters Section (Standard) - Complete .
 
 The users page contains 3 buttons below the user listing - **Show All**, **Active Only** and **Non Active**. Show All has already been implemented. Implement the remaining buttons using the following logic:
 * Active Only – This should show only users where their `IsActive` property is set to `true`
 * Non Active – This should show only users where their `IsActive` property is set to `false`
 
-### 2. User Model Properties (Standard) Complete.
+### 2. User Model Properties (Standard) - Complete.
 
 Add a new property to the `User` class in the system called `DateOfBirth` which is to be used and displayed in relevant sections of the app.
 
-### 3. Actions Section (Standard)
+### 3. Actions Section (Standard) - Complete. 
 
 Create the code and UI flows for the following actions
 * **Add** – A screen that allows you to create a new user and return to the list
@@ -32,7 +32,7 @@ Create the code and UI flows for the following actions
 
 Each of these screens should contain appropriate data validation, which is communicated to the end user.
 
-### 4. Data Logging (Advanced)
+### 4. Data Logging (Advanced) - Working on now. 
 
 Extend the system to capture log information regarding primary actions performed on each user in the app.
 * In the **View** screen there should be a list of all actions that have been performed against that user. 

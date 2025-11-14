@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 using UserManagement.Services.Domain.Interfaces;
 using UserManagement.Web.Models.Users;
 
@@ -117,6 +119,25 @@ public class UsersController : Controller
         }
 
         return RedirectToAction("List");
+    }
+    
+    [HttpGet("details/{id}")]
+    public async Task<IActionResult> Details(long id)
+    {
+        var user = await _userService.GetByIdAsync(id);
+        if(user == null) return NotFound();
+
+        var model = new UserDetailsViewModel
+        {
+            Id = user.Id,
+            Forename = user.Forename,
+            Surname = user.Surname,
+            DateOfBirth = user.DateOfBirth,
+            Email = user.Email,
+            IsActive = user.IsActive
+        };
+
+        return View(model);
     }
 
     [HttpPost]
