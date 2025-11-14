@@ -18,7 +18,7 @@ The users page contains 3 buttons below the user listing - **Show All**, **Activ
 * Active Only – This should show only users where their `IsActive` property is set to `true`
 * Non Active – This should show only users where their `IsActive` property is set to `false`
 
-### 2. User Model Properties (Standard) Doing Now.
+### 2. User Model Properties (Standard) Complete.
 
 Add a new property to the `User` class in the system called `DateOfBirth` which is to be used and displayed in relevant sections of the app.
 

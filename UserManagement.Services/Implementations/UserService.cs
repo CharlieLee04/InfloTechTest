@@ -36,6 +36,24 @@ public class UserService : IUserService
         
     }
 
+    public async Task<User?> GetByIdAsync(long id)
+    {
+        return await _dataAccess.GetByIdAsync<User>(id);
+    }
+
+    public Task<bool> Update(User user)
+    {
+        try
+        {
+            _dataAccess.Update(user);
+            return Task.FromResult(true);
+        }
+        catch
+        {
+            return Task.FromResult(false);
+        }
+    }
+
     public async Task<bool> Delete(long id)
     {
         var user = await _dataAccess.GetByIdAsync<User>(id);

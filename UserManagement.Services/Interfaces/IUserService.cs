@@ -14,5 +14,8 @@ public interface IUserService
     IEnumerable<User> FilterByActive(bool isActive);
     IEnumerable<User> GetAll();
     bool Create(User user);
+    Task<User?> GetByIdAsync(long id);
+    Task<bool> Update(User user);
     Task<bool> Delete(long id);
+    
 }

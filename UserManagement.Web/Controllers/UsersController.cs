@@ -76,6 +76,49 @@ public class UsersController : Controller
         
     }
 
+    [HttpGet("edit/{id}")]
+    public async Task<IActionResult> Edit(long id)
+    {
+        var user = await _userService.GetByIdAsync(id);
+        if(user == null) return NotFound();
+
+        var model = new EditUserViewModel
+        {
+            Id = user.Id,
+            Forename = user.Forename,
+            Surname = user.Surname,
+            DateOfBirth = user.DateOfBirth,
+            Email = user.Email,
+            IsActive = user.IsActive
+        };
+
+        return View(model);
+    }
+
+    [HttpPost("edit/{id}")]
+    public async Task<IActionResult> Edit(long id, EditUserViewModel model)
+    {
+        if (!ModelState.IsValid) return View(model);
+
+        var user = await _userService.GetByIdAsync(id);
+        if(user == null) return NotFound();
+
+        user.Forename = model.Forename;
+        user.Surname = model.Surname;
+        user.DateOfBirth = model.DateOfBirth;
+        user.Email = model.Email; 
+        user.IsActive = model.IsActive;
+
+        var result = await _userService.Update(user);
+        if(!result)
+        {
+            ModelState.AddModelError(string.Empty, "An error occured updating the users information");
+            return View(model);
+        }
+
+        return RedirectToAction("List");
+    }
+
     [HttpPost]
     public async Task<IActionResult> DeleteUser(long id)
     {
