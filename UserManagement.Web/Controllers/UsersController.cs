@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using UserManagement.Services.Domain.Implementations;
 using UserManagement.Services.Domain.Interfaces;
 using UserManagement.Web.Models.Users;
 
@@ -44,6 +42,38 @@ public class UsersController : Controller
         };
 
         return View(model);
+    }
+
+    [HttpGet("create")]
+    public IActionResult Create()
+    {
+        var model = new CreateUserViewModel();
+        return View(model);
+    }
+
+    [HttpPost("create")]
+    public IActionResult Create(CreateUserViewModel model)
+    {
+        if (!ModelState.IsValid) return View(model);
+
+        var user = new Models.User
+        {
+            Forename = model.Forename,
+            Surname = model.Surname,
+            DateOfBirth = model.DateOfBirth,
+            Email = model.Email,
+            IsActive = model.IsActive
+        };
+
+        var result = _userService.Create(user);
+
+        if(!result){
+            ModelState.AddModelError(string.Empty, "An error occurred creating the user.");
+            return View(model);
+        }
+
+        return RedirectToAction("List");
+        
     }
 
     [HttpPost]

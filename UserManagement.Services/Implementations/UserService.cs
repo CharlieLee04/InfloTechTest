@@ -24,6 +24,18 @@ public class UserService : IUserService
 
     public IEnumerable<User> GetAll() => _dataAccess.GetAll<User>();
 
+    public bool Create(User user)
+    {
+        try{
+            _dataAccess.Create(user);
+            return true;
+        }
+        catch{
+            return false;
+        }
+        
+    }
+
     public async Task<bool> Delete(long id)
     {
         var user = await _dataAccess.GetByIdAsync<User>(id);
