@@ -1,4 +1,6 @@
 using System;
+using Microsoft.Extensions.Logging.Abstractions;
+using UserManagement.Data.Entities;
 
 namespace UserManagement.Web.Models.Users
 {
@@ -10,5 +12,6 @@ namespace UserManagement.Web.Models.Users
         public DateOnly DateOfBirth { get; set; }
         public string Email { get; set; } = default!;
         public bool IsActive { get; set; }
+        public List<UserLogEntry> Logs { get; set; } = new();
     }
 }

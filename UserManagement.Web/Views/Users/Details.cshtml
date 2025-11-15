@@ -24,9 +24,39 @@
 
                 <dt class="col-sm-4">Active?</dt>
                 <dd class="col-sm-8">@(Model.IsActive ? "Yes" : "No")</dd>
-            </dl>
 
-            <a asp-controller="Users" asp-action="List" class="btn btn-secondary w-100 mt-3">Back to List</a>
+                <dt class="col-sm-4">Logs</dt>
+                <dd class="col-sm-8">
+                    @if (Model.Logs != null && Model.Logs.Any())
+                    {
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle w-100" type="button" id="logsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                View Logs (@Model.Logs.Count)
+                            </button>
+                            <ul class="dropdown-menu p-2" aria-labelledby="logsDropdown" style="max-height: 300px; overflow-y: auto; width: 400px;">
+                                @foreach (var log in Model.Logs)
+                                {
+                                    <li class="dropdown-item" style="white-space: normal; word-wrap: break-word;">
+                                        <strong>@log.Timestamp.ToString("g"):</strong>
+                                        <span>@log.Action</span>
+                                        @if (!string.IsNullOrEmpty(log.Details))
+                                        {
+                                            <div class="text-muted small mt-1">
+                                                @Html.Raw(log.Details.Replace("; ", ";<br />"))
+                                            </div>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <span>No logs found for this user.</span>
+                    }
+                </dd>
+            </dl>
+            <a asp-controller="Users" asp-action="List" class="btn btn-primary float-end w-100">Back to List</a>
         </div>
     </div>
 </div>

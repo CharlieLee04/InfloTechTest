@@ -1,0 +1,40 @@
+@model UserManagement.Web.Models.Logs.LogEntryViewModel
+
+@{
+    ViewData["Title"] = "Log Details";
+}
+
+<div class="container min-vh-100 d-flex justify-content-center align-items-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm p-4">
+            <h2 class="mb-4 text-center">Log Details</h2>
+
+            <dl class="row">
+                <dt class="col-sm-4">Log ID</dt>
+                <dd class="col-sm-8">@Model.Id</dd>
+
+                <dt class="col-sm-4">User</dt>
+                <dd class="col-sm-8">@Model.UserForename @Model.UserSurname</dd>
+
+                <dt class="col-sm-4">User ID</dt>
+                <dd class="col-sm-8">@Model.UserId</dd>
+
+                <dt class="col-sm-4">Action</dt>
+                <dd class="col-sm-8">@Model.Action</dd>
+
+                @if (!string.IsNullOrEmpty(Model.Details))
+                {
+                    <dt class="col-sm-4">Details</dt>
+                    <dd class="col-sm-8">@Html.Raw(Model.Details.Replace("; ", ";<br />"))</dd>
+                }
+
+                <dt class="col-sm-4">Timestamp</dt>
+                <dd class="col-sm-8">@Model.Timestamp.ToString("g")</dd>
+            </dl>
+
+            <a asp-controller="Logs" asp-action="List" class="btn btn-secondary w-100 mt-3">
+                Back to Logs
+            </a>
+        </div>
+    </div>
+</div>

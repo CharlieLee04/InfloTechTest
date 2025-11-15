@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualBasic;
+using UserManagement.Data.Entities;
 using UserManagement.Services.Domain.Interfaces;
 using UserManagement.Web.Models.Users;
 
@@ -11,7 +11,12 @@ namespace UserManagement.WebMS.Controllers;
 public class UsersController : Controller
 {
     private readonly IUserService _userService;
-    public UsersController(IUserService userService) => _userService = userService;
+    private readonly ILogService _logService;
+    public UsersController(IUserService userService, ILogService logService)
+    {
+        _userService = userService;
+        _logService = logService;
+    }
 
     [HttpGet]
     public ViewResult List(string filter)
@@ -74,6 +79,17 @@ public class UsersController : Controller
             return View(model);
         }
 
+        // Create Logs for user creation
+
+        _logService.add(new UserLogEntry
+        {
+            UserId = user.Id,
+            UserForename = user.Forename,
+            UserSurname = user.Surname,
+            Action = "User Created",
+            Timestamp = DateTime.UtcNow
+        });
+
         return RedirectToAction("List");
         
     }
@@ -105,6 +121,25 @@ public class UsersController : Controller
         var user = await _userService.GetByIdAsync(id);
         if(user == null) return NotFound();
 
+        // Collect changes 
+        var changes = new List<string>();
+
+        if(user.Forename != model.Forename)
+            changes.Add($"Forename changed from '{user.Forename}' to '{model.Forename}'");
+
+        if(user.Surname != model.Surname)
+            changes.Add($"Surname changed from '{user.Surname}' to '{model.Surname}'");
+
+        if(user.DateOfBirth != model.DateOfBirth)
+            changes.Add($"Date Of Birth changed from '{user.DateOfBirth}' to '{model.DateOfBirth}'");
+
+        if(user.Email != model.Email)
+            changes.Add($"Email changed from '{user.Email}' to '{model.Email}'");
+
+        if(user.IsActive != model.IsActive)
+            changes.Add($"IsActive changed from '{user.IsActive}' to '{model.IsActive}'");
+
+        // Apply Updates
         user.Forename = model.Forename;
         user.Surname = model.Surname;
         user.DateOfBirth = model.DateOfBirth;
@@ -118,6 +153,20 @@ public class UsersController : Controller
             return View(model);
         }
 
+        // Create a log if changes were made 
+        if (changes.Any())
+        {
+            _logService.add(new UserLogEntry
+            {
+                UserId = user.Id,
+                UserForename = user.Forename,
+                UserSurname = user.Surname,
+                Action = "User Edited",
+                Details = string.Join("; ", changes),
+                Timestamp = DateTime.UtcNow
+            });
+        }
+        
         return RedirectToAction("List");
     }
     
@@ -127,6 +176,8 @@ public class UsersController : Controller
         var user = await _userService.GetByIdAsync(id);
         if(user == null) return NotFound();
 
+         var logs = _logService.GetByUserId(id);
+
         var model = new UserDetailsViewModel
         {
             Id = user.Id,
@@ -134,7 +185,8 @@ public class UsersController : Controller
             Surname = user.Surname,
             DateOfBirth = user.DateOfBirth,
             Email = user.Email,
-            IsActive = user.IsActive
+            IsActive = user.IsActive,
+            Logs = logs.ToList()
         };
 
         return View(model);
@@ -143,8 +195,22 @@ public class UsersController : Controller
     [HttpPost]
     public async Task<IActionResult> DeleteUser(long id)
     {
+        var user = await _userService.GetByIdAsync(id);
+        if(user == null) return NotFound();
+
         var result = await _userService.Delete(id);
         if(!result) return NotFound();
+
+        // Add logging for deleting users
+        _logService.add(new UserLogEntry
+        {
+            UserId = id,
+            UserForename = user.Forename,
+            UserSurname = user.Surname,
+            Action = "User Deleted",
+            Timestamp = DateTime.UtcNow
+        });
+
         return RedirectToAction("List");
     }
 
