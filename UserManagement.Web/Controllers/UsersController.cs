@@ -79,7 +79,7 @@ public class UsersController : Controller
 
         // Create Logs for user creation
 
-        _logService.add(new UserLogEntry
+        await _logService.AddAsync(new UserLogEntry
         {
             UserId = user.Id,
             UserForename = user.Forename,
@@ -154,7 +154,7 @@ public class UsersController : Controller
         // Create a log if changes were made 
         if (changes.Any())
         {
-            _logService.add(new UserLogEntry
+            await _logService.AddAsync(new UserLogEntry
             {
                 UserId = user.Id,
                 UserForename = user.Forename,
@@ -174,7 +174,7 @@ public class UsersController : Controller
         var user = await _userService.GetByIdAsync(id);
         if(user == null) return NotFound();
 
-         var logs = _logService.GetByUserId(id);
+         var logs = await _logService.GetByUserIdAsync(id);
 
         var model = new UserDetailsViewModel
         {
@@ -200,7 +200,7 @@ public class UsersController : Controller
         if(!result) return NotFound();
 
         // Add logging for deleting users
-        _logService.add(new UserLogEntry
+        await _logService.AddAsync(new UserLogEntry
         {
             UserId = id,
             UserForename = user.Forename,
