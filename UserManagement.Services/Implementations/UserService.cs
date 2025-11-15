@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UserManagement.Data;
 using UserManagement.Models;
@@ -17,20 +17,25 @@ public class UserService : IUserService
     /// </summary>
     /// <param name="isActive"></param>
     /// <returns></returns>
-    public IEnumerable<User> FilterByActive(bool isActive)
+    public async Task<IEnumerable<User>> FilterByActive(bool isActive)
     {
-        throw new NotImplementedException();
+        return await Task.FromResult(_dataAccess.GetAll<User>().Where(u => u.IsActive == isActive));
     }
 
-    public IEnumerable<User> GetAll() => _dataAccess.GetAll<User>();
-
-    public bool Create(User user)
+    public async Task <IEnumerable<User>> GetAllAsync()
     {
-        try{
-            _dataAccess.Create(user);
+        return await Task.FromResult(_dataAccess.GetAll<User>());
+    }
+
+    public async Task<bool> CreateAsync(User user)
+    {
+        try
+        {
+            await _dataAccess.CreateAsync(user);
             return true;
         }
-        catch{
+        catch
+        {
             return false;
         }
         
@@ -41,25 +46,25 @@ public class UserService : IUserService
         return await _dataAccess.GetByIdAsync<User>(id);
     }
 
-    public Task<bool> Update(User user)
+    public async Task<bool> UpdateAsync(User user)
     {
         try
         {
-            _dataAccess.Update(user);
-            return Task.FromResult(true);
+            await _dataAccess.UpdateAsync(user);
+            return true;
         }
         catch
         {
-            return Task.FromResult(false);
+            return false;
         }
     }
 
-    public async Task<bool> Delete(long id)
+    public async Task<bool> DeleteAsync(long id)
     {
         var user = await _dataAccess.GetByIdAsync<User>(id);
         if(user == null) return false;
         
-        _dataAccess.Delete(user);
+        await _dataAccess.DeleteAsync(user);
         return true;
 
     }

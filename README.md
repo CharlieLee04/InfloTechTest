@@ -32,15 +32,17 @@ Create the code and UI flows for the following actions
 
 Each of these screens should contain appropriate data validation, which is communicated to the end user.
 
-### 4. Data Logging (Advanced) - Working on now. 
+### 4. Data Logging (Advanced) - Complete. 
 
 Extend the system to capture log information regarding primary actions performed on each user in the app.
-* In the **View** screen there should be a list of all actions that have been performed against that user. 
-* There should be a new **Logs** page, containing a list of log entries across the application.
-* In the Logs page, the user should be able to click into each entry to see more detail about it.
-* In the Logs page, think about how you can provide a good user experience - even when there are many log entries.
+* In the **View** screen there should be a list of all actions that have been performed against that user. - Each Users "view" screen has a dropdown box that appears if there are any logs 
+* There should be a new **Logs** page, containing a list of log entries across the application. - Logs page can be accessed from the nav bar. 
+* In the Logs page, the user should be able to click into each entry to see more detail about it. - The details button on the logs page handles this. 
 
-### 5. Extend the Application (Expert)
+* In the Logs page, think about how you can provide a good user experience - even when there are many log entries. - Might need to come back to this, Logs page does currently have filters but if there was a million 
+                                                                                                                     logs it would be the longest page ever, maybe cap it at 15 logs per page ? 
+
+### 5. Extend the Application (Expert) Complete (Make Async) . 
 
 Make a significant architectural change that improves the application.
 Structurally, the user management application is very simple, and there are many ways it can be made more maintainable, scalable or testable.
@@ -50,6 +52,8 @@ Some ideas are:
 * Implement authentication and login based on the users being stored.
 * Implement bundling of static assets.
 * Update the data access layer to use a real database, and implement database schema migrations.
+
+    Data access layer has been updated to be fully asynchronous. 
 
 ### 6. Future-Proof the Application (Platform)
 

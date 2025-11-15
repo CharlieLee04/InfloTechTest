@@ -33,22 +33,22 @@ public class DataContext : DbContext, IDataContext
     public IQueryable<TEntity> GetAll<TEntity>() where TEntity : class
         => base.Set<TEntity>();
 
-    public void Create<TEntity>(TEntity entity) where TEntity : class
+    public async Task CreateAsync<TEntity>(TEntity entity) where TEntity : class
     {
-        base.Add(entity);
-        SaveChanges();
+        await base.Set<TEntity>().AddAsync(entity);
+        await SaveChangesAsync();
     }
 
-    public new void Update<TEntity>(TEntity entity) where TEntity : class
+    public async Task UpdateAsync<TEntity>(TEntity entity) where TEntity : class
     {
-        base.Update(entity);
-        SaveChanges();
+        base.Set<TEntity>().Update(entity);
+        await SaveChangesAsync();
     }
 
-    public void Delete<TEntity>(TEntity entity) where TEntity : class
+    public async Task DeleteAsync<TEntity>(TEntity entity) where TEntity : class
     {
-        base.Remove(entity);
-        SaveChanges();
+        base.Set<TEntity>().Remove(entity);
+        await SaveChangesAsync();
     }
 
     public async Task<TEntity?> GetByIdAsync<TEntity>(long id) where TEntity : class
@@ -56,6 +56,6 @@ public class DataContext : DbContext, IDataContext
         return await base.Set<TEntity>().FindAsync(id);
     }
 
-    //public async Task SaveChangesAsync() =>
-       //await base.SaveChangesAsync();
+    public async Task SaveChangesAsync() =>
+       await base.SaveChangesAsync();
 }

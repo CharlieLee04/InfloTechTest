@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UserManagement.Data.Entities;
 using UserManagement.Services.Domain.Interfaces;
 
@@ -9,20 +10,32 @@ namespace UserManagement.Services.Domain.Implementations
     public class LogService : ILogService
     {
         private readonly List<UserLogEntry> _logs = new();
-        public void add(UserLogEntry entry)
+        public async Task AddAsync(UserLogEntry entry)
         {
             entry.Id = _logs.Count +1;
             entry.Timestamp = DateTime.UtcNow;
             _logs.Add(entry);
+            await Task.CompletedTask;
         }
 
-        public IEnumerable<UserLogEntry> GetAll() => _logs;
+        public async Task<IEnumerable<UserLogEntry>> GetAllAsync()
+        {
+            return await Task.FromResult(_logs.AsEnumerable());
+        }
 
-        public IEnumerable<UserLogEntry> GetByUserId(long userId)
-            => _logs.Where(l => l.UserId == userId);
+        public async Task<IEnumerable<UserLogEntry>> GetByUserIdAsync(long userId)
+        {
+            var logs = _logs.Where(l => l.UserId == userId);
+            return await Task.FromResult(logs);
+        }
+            
 
-        public UserLogEntry? GetById(long id)
-            => _logs.FirstOrDefault(l => l.Id == id);
+        public async Task <UserLogEntry?> GetByIdAsync(long id)
+        {
+            var log = _logs.FirstOrDefault(l => l.Id == id);
+            return await Task.FromResult(log);
+        }
+            
 
     }
 }

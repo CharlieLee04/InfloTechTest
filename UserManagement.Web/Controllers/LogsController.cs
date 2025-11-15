@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using UserManagement.Services.Domain.Interfaces;
 using UserManagement.Web.Models.Logs;
 
@@ -14,9 +15,10 @@ public class LogsController : Controller
     }
 
     [HttpGet("list")]
-    public IActionResult List(string search ="", string sortOrder = "asc")
+    public async Task<IActionResult> List(string search ="", string sortOrder = "asc")
 {
-    var logs = _logService.GetAll().Select(l => new LogEntryViewModel
+    var allLogs = await _logService.GetAllAsync();
+    var logs = allLogs.Select(l => new LogEntryViewModel
     {
         Id = l.Id,
         UserId = l.UserId,
@@ -42,9 +44,9 @@ public class LogsController : Controller
 }
 
     [HttpGet("{id}")]
-    public IActionResult Details(long id)
+    public async Task<IActionResult> Details(long id)
     {
-        var log = _logService.GetById(id);
+        var log = await _logService.GetByIdAsync(id);
         if(log == null) return NotFound();
 
         var model = new LogEntryViewModel

@@ -19,9 +19,11 @@ public class UsersController : Controller
     }
 
     [HttpGet]
-    public ViewResult List(string filter)
+    public async Task<ViewResult> List(string filter)
     {
-        var items = _userService.GetAll().Select(p => new UserListItemViewModel
+        var allUsers = await _userService.GetAllAsync();
+
+        var items = allUsers.Select(p => new UserListItemViewModel
         {
             Id = p.Id,
             Forename = p.Forename,
@@ -52,14 +54,10 @@ public class UsersController : Controller
     }
 
     [HttpGet("create")]
-    public IActionResult Create()
-    {
-        var model = new CreateUserViewModel();
-        return View(model);
-    }
-
+    public IActionResult Create() => View(new CreateUserViewModel());
+  
     [HttpPost("create")]
-    public IActionResult Create(CreateUserViewModel model)
+    public async Task<IActionResult> Create(CreateUserViewModel model)
     {
         if (!ModelState.IsValid) return View(model);
 
@@ -72,7 +70,7 @@ public class UsersController : Controller
             IsActive = model.IsActive
         };
 
-        var result = _userService.Create(user);
+        var result = await _userService.CreateAsync(user);
 
         if(!result){
             ModelState.AddModelError(string.Empty, "An error occurred creating the user.");
@@ -146,7 +144,7 @@ public class UsersController : Controller
         user.Email = model.Email; 
         user.IsActive = model.IsActive;
 
-        var result = await _userService.Update(user);
+        var result = await _userService.UpdateAsync(user);
         if(!result)
         {
             ModelState.AddModelError(string.Empty, "An error occured updating the users information");
@@ -198,7 +196,7 @@ public class UsersController : Controller
         var user = await _userService.GetByIdAsync(id);
         if(user == null) return NotFound();
 
-        var result = await _userService.Delete(id);
+        var result = await _userService.DeleteAsync(id);
         if(!result) return NotFound();
 
         // Add logging for deleting users
