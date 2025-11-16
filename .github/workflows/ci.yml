@@ -44,7 +44,7 @@ jobs:
 
     # 6. Run tests
     - name: Run tests
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --verbosity normal
 
     # 7. Publish artifacts (optional)
     - name: Publish build artifacts
