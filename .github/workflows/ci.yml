@@ -1,0 +1,56 @@
+name: .NET 9 CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+    # 1. Checkout repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. Setup .NET 9 SDK
+    - name: Setup .NET 9 SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 9.0.x
+
+    # 3. Cache NuGet packages
+    - name: Cache NuGet packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    # 4. Restore dependencies
+    - name: Restore dependencies
+      run: dotnet restore
+
+    # 5. Build the solution
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+
+    # 6. Run tests
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal
+
+    # 7. Publish artifacts (optional)
+    - name: Publish build artifacts
+      if: success()
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifacts
+        path: '**/bin/Release/**'
+

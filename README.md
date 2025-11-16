@@ -58,7 +58,7 @@ Some ideas are:
 ### 6. Future-Proof the Application (Platform)
 
 Add additional layers to the application that will ensure that it is scaleable with many users or developers. For example:
-* Add CI pipelines to run tests and build the application.
+* Add CI pipelines to run tests and build the application. 
 * Add CD pipelines to deploy the application to cloud infrastructure.
 * Add IaC to support easy deployment to new environments.
 * Introduce a message bus and/or worker to handle long-running operations.
