@@ -40,17 +40,16 @@ jobs:
 
     # 5. Build the solution
     - name: Build
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build --configuration Release
 
     # 6. Run tests
     - name: Run tests
       run: dotnet test --verbosity normal
 
-    # 7. Publish artifacts (optional)
+    # 7. Publish artifacts
     - name: Publish build artifacts
       if: success()
       uses: actions/upload-artifact@v4
       with:
-        name: build-artifacts
+        name: build-artifacts-${{ matrix.os }}
         path: '**/bin/Release/**'
-
