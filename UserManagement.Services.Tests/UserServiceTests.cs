@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks; 
 using UserManagement.Models;
 using UserManagement.Services.Domain.Implementations;
 
@@ -8,14 +9,14 @@ namespace UserManagement.Data.Tests;
 public class UserServiceTests
 {
     [Fact]
-    public void GetAll_WhenContextReturnsEntities_MustReturnSameEntities()
+    public async Task GetAllAsync_WhenContextReturnsEntities_MustReturnSameEntities()
     {
         // Arrange: Initializes objects and sets the value of the data that is passed to the method under test.
         var service = CreateService();
         var users = SetupUsers();
 
         // Act: Invokes the method under test with the arranged parameters.
-        var result = service.GetAll();
+        var result = await service.GetAllAsync();
 
         // Assert: Verifies that the action of the method under test behaves as expected.
         result.Should().BeSameAs(users);
